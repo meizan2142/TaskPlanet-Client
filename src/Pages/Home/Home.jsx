@@ -1,5 +1,3 @@
-// import { NavLink } from "react-router"
-
 import { NavLink } from "react-router"
 
 const Home = () => {
@@ -16,8 +14,8 @@ const Home = () => {
                     </li>
                 </ul>
                 <div className="items-center flex-shrink-0 hidden lg:flex gap-4">
-                    <button className="self-center px-8 py-3 font-semibold rounded dark:bg-violet-600 dark:text-gray-50">Sign up</button>
-                    <button className="self-center px-8 py-3 font-semibold rounded dark:bg-violet-600 dark:text-gray-50">Sign in</button>
+                    <NavLink to='/register'><button className="self-center px-8 py-3 font-semibold rounded dark:bg-violet-600 dark:text-gray-50">SignUp</button></NavLink>
+                    <NavLink to='/login'><button className="self-center px-8 py-3 font-semibold rounded dark:bg-violet-600 dark:text-gray-50">SignIn</button></NavLink>
                 </div>
                 <button className="p-4 lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 dark:text-gray-800">
