@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { query, where, getDocs, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig/firebaseConfig";
+import { FaArrowLeftLong } from "react-icons/fa6";
 
 const LogIn = () => {
     const { signIn } = useAuth();
@@ -26,7 +27,7 @@ const LogIn = () => {
             const email = userData.Email;
 
             await signIn(email, password);
-            navigate(location?.state || "/info");
+            navigate(location?.state || "/");
         } catch (error) {
             console.error("Login failed:", error.message);
             alert("Invalid username or password");
@@ -36,6 +37,7 @@ const LogIn = () => {
 
     return (
         <div className="mx-auto my-52 w-full max-w-md space-y-8 rounded-lg border bg-white p-7 shadow-xl mobile:p-10">
+            <NavLink to='/'><FaArrowLeftLong color="black" size={20} /></NavLink>
             <h1 className="text-3xl font-semibold text-black">SIGN IN</h1>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

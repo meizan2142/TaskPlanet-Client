@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast"
 import { addDoc, collection } from "firebase/firestore"
@@ -9,6 +9,8 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 const Register = () => {
     const { createUser } = useAuth()
     const [images, setImages] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
     const dbref = collection(db, 'Users')
 
     // Handle image selection
@@ -28,12 +30,12 @@ const Register = () => {
         const role = 'user';
         // Attach images to userInfo
         const userInfo = { email, username, password, social, images, role };
-        console.log("User Info:", userInfo);
+        // console.log("User Info:", userInfo);
 
-        const allImages = images
-        console.log(allImages[0].name);
+        // const allImages = images
+        // console.log(allImages[0].name);
         try {
-            console.log("User Info:", userInfo);
+            // console.log("User Info:", userInfo);
 
             // Step 1: Create user in Firebase Authentication
             await createUser(email, password);
@@ -48,25 +50,25 @@ const Register = () => {
             console.log("User info saved in Firestore Database");
 
             // Step 3: Save user details in your external backend (if needed)
-            // const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(userInfo), // Do not include the password in real-world applications
-            // });
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/allusers`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userInfo), // Do not include the password in real-world applications
+            });
 
-            // if (!response.ok) {
-            //     throw new Error(`API Error: ${response.status}`);
-            // }
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
 
-            // const responseData = await response.json();
-            // if (responseData.insertedId) {
-            //     toast.success("Registered and Stored!");
-            //     navigate(location?.state || "/login");
-            // } else {
-            //     throw new Error("Failed to insert user data into the backend");
-            // }
+            const responseData = await response.json();
+            if (responseData.insertedId) {
+                toast.success("Registered and Stored!");
+                navigate(location?.state || "/login");
+            } else {
+                throw new Error("Failed to insert user data into the backend");
+            }
         } catch (error) {
             console.error("Error occurred during registration:", error);
             toast.error("Failed to register and store user.");
